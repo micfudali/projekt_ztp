@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.post_show'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.post_show'|trans }}</h1>
+    {% if post is defined and post|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.id'|trans }}</dt>
+            <dd>{{ post.id }}</dd>
+            <dt>{{ 'label.created_at'|trans }}</dt>
+            <dd>{{ post.createdAt|format_date('long') }}</dd>
+            <dt>{{ 'label.title'|trans }}</dt>
+            <dd>{{  post.title }}</dd>
+            <dt>{{ 'label.category'|trans }}</dt>
+            <dd>{{  post.category.title }}</dd>
+            <dt>{{ 'label.content'|trans }}</dt>
+            <dd>{{ post.contents }}</dd>
+        </dl>
+        <h2>{{ 'title.comments_section'|trans }}</h2>
+        {% for comment in post.comments %}
+            <dl class="dl-horizontal">
+                <dt>{{ 'label.email'|trans }}</dt>
+                <dd>{{ comment.email }}</dd>
+                <dt>{{ 'label.nick'|trans }}</dt>
+                <dd>{{ comment.nick }}</dd>
+                <dt>{{ 'label.contents'|trans }}</dt>
+                <dd>{{ comment.contents }}</dd>
+                <dt>
+                    {% if is_granted('DELETE', post) %}
+                        <a class="btn btn-outline-danger" href="{{ url('comment_delete', {id: comment.id}) }}" title="{{ 'action.delete'|trans }}">
+                            {{ 'action.delete'|trans }}
+                        </a>
+                    {% endif %}
+                </dt>
+            </dl>
+        {% endfor %}
+        <p>
+            <a class="btn btn-outline-primary" href="{{ url('post_comment', {id: post.id}) }}" title="{{ 'action.add_comment'|trans }}">
+                {{ 'action.add_comment'|trans }}
+            </a>
+        </p>
+        <p>
+            <a class="btn btn-outline-primary" href="{{ url('post_index') }}" title="{{ 'action.back_to_list'|trans }}">
+                {{ 'action.back_to_list'|trans }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'message.record_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

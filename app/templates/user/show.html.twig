@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.user_profile'|trans({'%id%': user.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.user_profile'|trans({'%id%': user.id|default('')}) }}</h1>
+    {% if user is defined and user|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.id'|trans }}</dt>
+            <dd>{{ user.id }}</dd>
+            <dt>{{ 'label.email'|trans }}</dt>
+            <dd>{{  user.email }}</dd>
+        </dl>
+        <p>
+            <a class="btn btn-outline-warning" href="{{ url('user_edit', {id: app.user.id}) }}">
+                {{ 'action.update_credentials'|trans }}
+            </a>
+        </p>
+        <p>
+            <a class="btn btn-outline-primary" href="{{ url('post_index') }}" title="{{ 'action.back_to_list'|trans }}">
+                {{ 'action.back_to_list'|trans }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'message.user_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

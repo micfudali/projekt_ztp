@@ -5,8 +5,8 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Post;
 use App\Entity\Category;
+use App\Entity\Post;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,10 +34,10 @@ class PostType extends AbstractType
                 'title',
                 TextType::class,
                 [
-                'label' => 'label.title',
-                'required' => true,
-                'attr' => ['max_length' => 64],
-                    ]
+                    'label' => 'label.title',
+                    'required' => true,
+                    'attr' => ['max_length' => 64],
+                ]
             )
             ->add(
                 'contents',
@@ -46,16 +46,14 @@ class PostType extends AbstractType
                     'label' => 'label.contents',
                     'required' => true,
                     'attr' => ['max_length' => 65535],
-                    ]
+                ]
             )
             ->add(
                 'category',
                 EntityType::class,
                 [
                     'class' => Category::class,
-                    'choice_label' => function ($category): string {
-                        return $category->getTitle();
-                    },
+                    'choice_label' => fn ($category): string => $category->getTitle(),
                     'label' => 'label.category',
                     'placeholder' => 'label.none',
                     'required' => true,

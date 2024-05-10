@@ -14,18 +14,12 @@ use App\Repository\CommentRepository;
 class CommentService implements CommentServiceInterface
 {
     /**
-     * Comment repository.
-     */
-    private CommentRepository $commentRepository;
-
-    /**
      * Constructor.
      *
      * @param CommentRepository $commentRepository Comment repository
      */
-    public function __construct(CommentRepository $commentRepository)
+    public function __construct(private readonly CommentRepository $commentRepository)
     {
-        $this->commentRepository = $commentRepository;
     }
 
     /**

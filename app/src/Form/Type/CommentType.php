@@ -35,9 +35,9 @@ class CommentType extends AbstractType
                 'email',
                 TextType::class,
                 [
-                'label' => 'label.email',
-                'required' => true,
-                'attr' => ['max_length' => 64],
+                    'label' => 'label.email',
+                    'required' => true,
+                    'attr' => ['max_length' => 64],
                     'constraints' => [
                         new NotBlank([
                             'message' => 'message.not_blank',

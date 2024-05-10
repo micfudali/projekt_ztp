@@ -11,31 +11,15 @@ use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class UserController.
  */
-#[Route('{id}/user')]
+#[\Symfony\Component\Routing\Attribute\Route('{id}/user')]
 class UserController extends AbstractController
 {
-    /**
-     * User service.
-     */
-    private UserServiceInterface $userService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
-     * Password hasher.
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
     /**
      * Constructor.
      *
@@ -43,11 +27,8 @@ class UserController extends AbstractController
      * @param TranslatorInterface         $translator     Translator
      * @param UserPasswordHasherInterface $passwordHasher Password hasher
      */
-    public function __construct(UserServiceInterface $userService, TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator, private readonly UserPasswordHasherInterface $passwordHasher)
     {
-        $this->userService = $userService;
-        $this->translator = $translator;
-        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -57,7 +38,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         name: 'user_show',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
@@ -75,7 +56,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(UserType::class, $user, [

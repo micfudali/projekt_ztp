@@ -7,9 +7,9 @@ namespace App\Service;
 
 use App\Entity\Post;
 use App\Repository\PostRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class PostService.
@@ -17,38 +17,26 @@ use Doctrine\ORM\NonUniqueResultException;
 class PostService implements PostServiceInterface
 {
     /**
-     * Post repository.
-     *
-     * @var PostRepository Post repository
-     */
-    private PostRepository $postRepository;
-
-    /**
-     * Category service.
-     *
-     * @var CategoryServiceInterface Category service interface
-     */
-    private CategoryServiceInterface $categoryService;
-
-    /**
-     * Paginator.
-     *
-     * @var PaginatorInterface Paginator
-     */
-    private PaginatorInterface $paginator;
-
-    /**
      * Constructor.
      *
      * @param PostRepository           $postRepository  Post repository
      * @param PaginatorInterface       $paginator       Paginator interface
      * @param CategoryServiceInterface $categoryService Category service interface
      */
-    public function __construct(PostRepository $postRepository, PaginatorInterface $paginator, CategoryServiceInterface $categoryService)
-    {
-        $this->postRepository = $postRepository;
-        $this->paginator = $paginator;
-        $this->categoryService = $categoryService;
+    public function __construct(
+        /**
+         * Post repository.
+         */
+        private readonly PostRepository $postRepository,
+        /**
+         * Paginator.
+         */
+        private readonly PaginatorInterface $paginator,
+        /**
+         * Category service.
+         */
+        private readonly CategoryServiceInterface $categoryService
+    ) {
     }
 
     /**

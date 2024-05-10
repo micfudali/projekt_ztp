@@ -39,18 +39,12 @@ class PostVoter extends Voter
     public const DELETE = 'DELETE';
 
     /**
-     * Security helper.
-     */
-    private Security $security;
-
-    /**
      * OrderVoter constructor.
      *
      * @param Security $security Security helper
      */
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     /**
@@ -84,16 +78,12 @@ class PostVoter extends Voter
             return false;
         }
 
-        switch ($attribute) {
-            case self::EDIT:
-                return $this->canEdit($subject, $user);
-            case self::VIEW:
-                return $this->canView($subject, $user);
-            case self::DELETE:
-                return $this->canDelete($subject, $user);
-        }
-
-        return false;
+        return match ($attribute) {
+            self::EDIT => $this->canEdit($subject, $user),
+            self::VIEW => $this->canView($subject, $user),
+            self::DELETE => $this->canDelete($subject, $user),
+            default => false,
+        };
     }
 
     /**

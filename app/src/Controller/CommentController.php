@@ -8,37 +8,21 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Post;
-use App\Repository\CommentRepository;
 use App\Form\Type\CommentType;
 use App\Form\Type\DeleteCommentType;
+use App\Repository\CommentRepository;
 use App\Service\CommentServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CommentController.
  */
-#[Route('/comment')]
+#[\Symfony\Component\Routing\Attribute\Route('/comment')]
 class CommentController extends AbstractController
 {
-    /**
-     * Comment Repository.
-     */
-    private CommentRepository $commentRepository;
-
-    /**
-     * Comment service.
-     */
-    private CommentServiceInterface $commentService;
-
-    /**
-     * Translator interface.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
@@ -46,11 +30,8 @@ class CommentController extends AbstractController
      * @param CommentServiceInterface $commentService    Comment service
      * @param TranslatorInterface     $translator        Translator
      */
-    public function __construct(CommentRepository $commentRepository, CommentServiceInterface $commentService, TranslatorInterface $translator)
+    public function __construct(private readonly CommentRepository $commentRepository, private readonly CommentServiceInterface $commentService, private readonly TranslatorInterface $translator)
     {
-        $this->commentRepository = $commentRepository;
-        $this->commentService = $commentService;
-        $this->translator = $translator;
     }
 
     /**
@@ -61,7 +42,7 @@ class CommentController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/create',
         name: 'comment_create',
         methods: 'GET|POST',
@@ -93,7 +74,7 @@ class CommentController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'comment_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'comment_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     public function delete(Request $request, Comment $comment): Response
     {
         $form = $this->createForm(DeleteCommentType::class, $comment, [

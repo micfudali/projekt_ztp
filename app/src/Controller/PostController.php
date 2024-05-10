@@ -6,42 +6,26 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
-use App\Entity\Comment;
-use App\Form\Type\DeletePostType;
 use App\Form\Type\CommentType;
-use App\Service\PostServiceInterface;
-use App\Service\CommentServiceInterface;
+use App\Form\Type\DeletePostType;
 use App\Form\Type\PostType;
+use App\Service\CommentServiceInterface;
+use App\Service\PostServiceInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class PostController.
  */
-#[Route('/post')]
+#[\Symfony\Component\Routing\Attribute\Route('/post')]
 class PostController extends AbstractController
 {
-    /**
-     * Post service interface.
-     */
-    private PostServiceInterface $postService;
-
-    /**
-     * Comment service.
-     */
-    private CommentServiceInterface $commentService;
-
-    /**
-     * Translator interface.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
@@ -49,11 +33,8 @@ class PostController extends AbstractController
      * @param TranslatorInterface     $translator     Translator
      * @param CommentServiceInterface $commentService Comment service
      */
-    public function __construct(PostServiceInterface $postService, TranslatorInterface $translator, CommentServiceInterface $commentService)
+    public function __construct(private readonly PostServiceInterface $postService, private readonly TranslatorInterface $translator, private readonly CommentServiceInterface $commentService)
     {
-        $this->postService = $postService;
-        $this->translator = $translator;
-        $this->commentService = $commentService;
     }
 
     /**
@@ -63,7 +44,7 @@ class PostController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'post_index', methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'post_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $filters = $this->getFilters($request);
@@ -82,7 +63,7 @@ class PostController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/{id}',
         name: 'post_show',
         requirements: ['id' => '[1-9]\d*'],
@@ -102,7 +83,7 @@ class PostController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'post_create', methods: 'GET|POST')]
+    #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'post_create', methods: 'GET|POST')]
     #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): Response
     {
@@ -141,7 +122,7 @@ class PostController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'post_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'post_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('EDIT', subject: 'post')]
     public function edit(Request $request, Post $post): Response
     {
@@ -179,7 +160,7 @@ class PostController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'post_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'post_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('DELETE', subject: 'post')]
     public function delete(Request $request, Post $post): Response
     {
@@ -217,7 +198,7 @@ class PostController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/comment', name: 'post_comment', methods: 'GET|POST')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/comment', name: 'post_comment', methods: 'GET|POST')]
     public function comment(Request $request, Post $post): Response
     {
         $comment = new Comment();
@@ -253,10 +234,6 @@ class PostController extends AbstractController
      */
     private function getFilters(Request $request): array
     {
-        $filters = [];
-        $filters['category_id'] = $request->query->getInt('filters_category_id');
-        $filters['tag_id'] = $request->query->getInt('filters_tag_id');
-
-        return $filters;
+        return ['category_id' => $request->query->getInt('filters_category_id'), 'tag_id' => $request->query->getInt('filters_tag_id')];
     }
 }

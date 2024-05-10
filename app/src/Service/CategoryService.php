@@ -8,10 +8,10 @@ namespace App\Service;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * Class CategoryService.
@@ -19,32 +19,14 @@ use Doctrine\ORM\NoResultException;
 class CategoryService implements CategoryServiceInterface
 {
     /**
-     * Category repository.
-     */
-    private CategoryRepository $categoryRepository;
-
-    /**
-     * Post repository.
-     */
-    private PostRepository $postRepository;
-
-    /**
-     * Paginator.
-     */
-    private PaginatorInterface $paginator;
-
-    /**
      * Constructor.
      *
      * @param CategoryRepository $categoryRepository Category repository
      * @param PaginatorInterface $paginator          Paginator interface
      * @param PostRepository     $postRepository     Post repository
      */
-    public function __construct(CategoryRepository $categoryRepository, PaginatorInterface $paginator, PostRepository $postRepository)
+    public function __construct(private readonly CategoryRepository $categoryRepository, private readonly PaginatorInterface $paginator, private readonly PostRepository $postRepository)
     {
-        $this->categoryRepository = $categoryRepository;
-        $this->paginator = $paginator;
-        $this->postRepository = $postRepository;
     }
 
     /**
@@ -93,7 +75,7 @@ class CategoryService implements CategoryServiceInterface
         try {
             $result = $this->postRepository->countByCategory($category);
 
-            return !($result > 0);
+            return $result <= 0;
         } catch (NoResultException|NonUniqueResultException) {
             return false;
         }

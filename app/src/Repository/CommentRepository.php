@@ -8,8 +8,8 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Comment>
@@ -61,43 +61,43 @@ class CommentRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * Find by example field.
-//     *
-//     * @param $value Example value
-//     *
-//     * @return array Array
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//
+    //    /**
+    //     * Find by example field.
+    //     *
+    //     * @param $value Example value
+    //     *
+    //     * @return array Array
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //
 
-//    /**
-//     * Find by some field.
-//     *
-//     * @param $value Example value
-//     *
-//     * @return Comment|null
-//     *
-//     * @throws NonUniqueResultException
-//     */
-//    public function findOneBySomeField($value): ?Comment
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * Find by some field.
+    //     *
+    //     * @param $value Example value
+    //     *
+    //     * @return Comment|null
+    //     *
+    //     * @throws NonUniqueResultException
+    //     */
+    //    public function findOneBySomeField($value): ?Comment
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
     /**
      * Save entity.

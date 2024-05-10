@@ -14,18 +14,12 @@ use App\Repository\UserRepository;
 class UserService implements UserServiceInterface
 {
     /**
-     * User repository.
-     */
-    private UserRepository $userRepository;
-
-    /**
      * Constructor.
      *
      * @param UserRepository $userRepository User repository
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private readonly UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     /**

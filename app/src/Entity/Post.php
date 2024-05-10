@@ -7,7 +7,6 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,7 +65,7 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
-    private ?User $author;
+    private ?User $author = null;
 
     /**
      * Comments.
@@ -144,9 +143,9 @@ class Post
     /**
      * Getter for created at.
      *
-     * @return DateTimeImmutable|null Created at
+     * @return \DateTimeImmutable|null Created at
      */
-    public function getCreatedAt(): ?DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -154,11 +153,11 @@ class Post
     /**
      * Setter for created at.
      *
-     * @param DateTimeImmutable $createdAt Created at
+     * @param \DateTimeImmutable $createdAt Created at
      *
      * @return $this Returns this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -289,10 +288,8 @@ class Post
      */
     public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment)) {
-            if ($comment->getPost() === $this) {
-                $comment->setPost(null);
-            }
+        if ($this->comments->removeElement($comment) && $comment->getPost() === $this) {
+            $comment->setPost(null);
         }
 
         return $this;

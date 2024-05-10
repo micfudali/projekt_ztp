@@ -8,7 +8,6 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Entity\User;
-use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 /**
@@ -25,7 +24,7 @@ class PostFixtures extends AbstractBaseFixtures implements DependentFixtureInter
      */
     public function loadData(): void
     {
-        if (null === $this->manager || null === $this->faker) {
+        if (!$this->manager instanceof \Doctrine\Persistence\ObjectManager || !$this->faker instanceof \Faker\Generator) {
             return;
         }
 
@@ -34,7 +33,7 @@ class PostFixtures extends AbstractBaseFixtures implements DependentFixtureInter
             $post->setTitle($this->faker->sentence);
             $post->setContents($this->faker->text);
             $post->setCreatedAt(
-                DateTimeImmutable::createFromMutable(
+                \DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')
                 )
             );

@@ -1,4 +1,4 @@
-# see https://symfony.com/doc/current/reference/configuration/framework.html
+# see https://symfony.com/doc/current/reference/configuration/framewUncaught PHP Exception Symfony\Component\HttpKernel\Exception\NotFoundHttpException: "No route found for "GET http://localhost:8000/"" at /home/wwwroot/app/vendor/symfony/http-kernel/EventListener/RouterListener.php line 135ork.html
 framework:
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true

@@ -1,4 +1,10 @@
-
+.idea
+var
+vendor
+.php_cs.cache
+.php-cs-fixer.cache
+.phpunit.result.cache
+.env
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

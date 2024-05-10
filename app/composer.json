@@ -4,13 +4,13 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.3.6",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/annotations": "^1.0",
-        "doctrine/doctrine-bundle": "^2.6",
+        "doctrine/annotations": "^2.0",
+        "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.12",
+        "doctrine/orm": "^2.17",
         "knplabs/knp-paginator-bundle": "^5.8",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.5",
@@ -46,15 +46,18 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "doctrine/doctrine-fixtures-bundle": "^3.6",
+        "escapestudios/symfony2-coding-standard": "*",
         "fakerphp/faker": "^1.19",
-        "friendsofphp/php-cs-fixer": "^3.8",
+        "friendsofphp/php-cs-fixer": "*",
         "phpunit/phpunit": "^9.5",
+        "rector/rector": "^1.0",
+        "squizlabs/php_codesniffer": "*",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
         "symfony/debug-bundle": "5.4.*",
-        "symfony/maker-bundle": "^1.43",
-        "symfony/phpunit-bridge": "^6.0",
+        "symfony/maker-bundle": "^1.50",
+        "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "5.4.*",
         "symfony/web-profiler-bundle": "5.4.*"
     },
@@ -92,14 +95,22 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "@php-cs-fixer"
+            "@static-analysis"
         ],
         "post-update-cmd": [
             "@auto-scripts",
-            "@php-cs-fixer"
+            "@static-analysis"
         ],
-        "php-cs-fixer": [
-            "./vendor/bin/php-cs-fixer fix src/"
+        "static-analysis": [
+            "./vendor/bin/phpcs --config-set installed_paths $(realpath vendor/escapestudios/symfony2-coding-standard)",
+            "./vendor/bin/phpcs --config-set default_standard Symfony",
+            "./vendor/bin/phpcs --standard=Symfony src/ --ignore=Kernel.php",
+            "./vendor/bin/phpcbf --standard=Symfony src/ --ignore=Kernel.php",
+            "./vendor/bin/php-cs-fixer fix src/ --rules=@Symfony,@PSR1,@PSR2,@PSR12",
+            "./vendor/bin/phpcbf --standard=Symfony tests/ --ignore=object-mapper.php",
+            "./vendor/bin/php-cs-fixer fix tests/ --rules=@Symfony,@PSR1,@PSR2,@PSR12",
+            "./vendor/bin/rector process src",
+            "./vendor/bin/rector process tests"
         ]
     },
     "conflict": {

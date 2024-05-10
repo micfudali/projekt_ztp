@@ -8,7 +8,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -18,12 +17,8 @@ class SecurityController extends AbstractController
 {
     /**
      * Login function.
-     *
-     * @param AuthenticationUtils $authenticationUtils
-     *
-     * @return Response
      */
-    #[Route(path: '/login', name: 'app_login')]
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
@@ -40,10 +35,8 @@ class SecurityController extends AbstractController
 
     /**
      * Logout function.
-     *
-     * @return void
      */
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

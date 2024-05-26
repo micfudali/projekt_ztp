@@ -8,10 +8,10 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class SecurityTest.
+ * Class SecurityControllerTest.
  */
 
-class SecurityTest extends WebTestCase
+class SecurityControllerTest extends WebTestCase
 {
     /**
      * Tested route

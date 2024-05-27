@@ -12,13 +12,13 @@ class CategoryEntityTest extends TestCase
 {
     /**
      * Test can get and set data.
-     * @return void
      */
     public function testCanGetAndSetData(): void
     {
         $testedCategory = new Category();
         $testedCategory->setTitle('Test Category');
 
-        self::assertSame("Test Category", $testedCategory->getTitle());
+        self::assertSame('Test Category', $testedCategory->getTitle());
+        self::assertSame($testedCategory->getId(), $testedCategory->getId());
     }
 }

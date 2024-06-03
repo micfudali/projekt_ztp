@@ -69,6 +69,8 @@ class CategoryService implements CategoryServiceInterface
      * Can be deleted?
      *
      * @param Category $category Category entity
+     *
+     * @return false
      */
     public function canBeDeleted(Category $category): bool
     {

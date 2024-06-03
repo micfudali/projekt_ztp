@@ -23,20 +23,8 @@ class PostService implements PostServiceInterface
      * @param PaginatorInterface       $paginator       Paginator interface
      * @param CategoryServiceInterface $categoryService Category service interface
      */
-    public function __construct(
-        /**
-         * Post repository.
-         */
-        private readonly PostRepository $postRepository,
-        /**
-         * Paginator.
-         */
-        private readonly PaginatorInterface $paginator,
-        /**
-         * Category service.
-         */
-        private readonly CategoryServiceInterface $categoryService
-    ) {
+    public function __construct(private readonly PostRepository $postRepository, private readonly PaginatorInterface $paginator, private readonly CategoryServiceInterface $categoryService)
+    {
     }
 
     /**
@@ -67,7 +55,7 @@ class PostService implements PostServiceInterface
      */
     public function save(Post $post): void
     {
-        if (null == $post->getId()) {
+        if (null === $post->getId()) {
             $post->setCreatedAt(new \DateTimeImmutable());
         }
 

@@ -20,7 +20,7 @@
             <dd>{{ post.contents }}</dd>
         </dl>
         <h2>{{ 'title.comments_section'|trans }}</h2>
-        {% for comment in post.comments %}
+        {% for comment in comments %}
             <dl class="dl-horizontal">
                 <dt>{{ 'label.email'|trans }}</dt>
                 <dd>{{ comment.email }}</dd>

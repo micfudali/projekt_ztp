@@ -35,7 +35,6 @@ class PostEntityTest extends TestCase
         self::assertSame($testedPost->getCategory(), $testedPost->getCategory());
         self::assertSame($testedPost->getCreatedAt(), $testedPost->getCreatedAt());
         self::assertSame($testedPost->getAuthor(), $testedPost->getAuthor());
-        self::assertSame($testedPost->getComments(), $testedPost->getComments());
         self::assertSame($testedPost->getTags(), $testedPost->getTags());
     }
 }

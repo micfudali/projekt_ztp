@@ -9,6 +9,7 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,12 +67,6 @@ class Post
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
     private ?User $author = null;
-
-    /**
-     * Comments.
-     */
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['remove'])]
-    private $comments;
 
     /**
      * Constructor.
@@ -255,11 +250,22 @@ class Post
     /**
      * Getter for comments.
      *
-     * @return Collection Comments
+     * @param EntityManagerInterface $entityManager
+     * @param int                    $postId
+     *
+     * @return array
      */
-    public function getComments(): Collection
+    public function getComments(EntityManagerInterface $entityManager, int $postId): array
     {
-        return $this->comments;
+        $query = $entityManager->createQuery(
+            'SELECT c
+        FROM App\Entity\Comment c
+        WHERE c.post = :postId'
+        )->setParameter('postId', $postId);
+
+        $comments = $query->getResult();
+
+        return $comments ?: [];
     }
 
     /**

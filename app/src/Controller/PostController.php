@@ -14,6 +14,7 @@ use App\Form\Type\DeletePostType;
 use App\Form\Type\PostType;
 use App\Service\CommentServiceInterface;
 use App\Service\PostServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,9 +60,10 @@ class PostController extends AbstractController
     /**
      * Show action.
      *
-     * @param Post $post Post
+     * @param Post                   $post
+     * @param EntityManagerInterface $entityManager
      *
-     * @return Response HTTP response
+     * @return Response
      */
     #[\Symfony\Component\Routing\Attribute\Route(
         '/{id}',
@@ -69,10 +71,13 @@ class PostController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function show(Post $post): Response
+    public function show(Post $post, EntityManagerInterface $entityManager): Response
     {
+        $comments = $post->getComments($entityManager, $post->getId());
+
         return $this->render('post/show.html.twig', [
             'post' => $post,
+            'comments' => $comments,
         ]);
     }
 

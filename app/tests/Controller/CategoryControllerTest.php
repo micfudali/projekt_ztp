@@ -1,6 +1,9 @@
 <?php
+
 /**
- * Category Controller test.
+ * This test file is a part of project made as a part of the ZTP course completion.
+ *
+ * (c) Michał Fudali <michal.fudali@student.uj.edu.pl>
  */
 
 namespace App\Tests\Controller;
@@ -19,35 +22,18 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class CategoryControllerTest.
+ * Class Category Controller Test.
  */
 class CategoryControllerTest extends WebTestCase
 {
-
-
-    /**
-     * Test route.
-     *
-     * @const string
-     */
     public const TEST_ROUTE = '/category';
-
-    /**
-     * Test client.
-     */
     private KernelBrowser $httpClient;
-
-    /**
-     * Category repository.
-     *
-     * @var EntityManagerInterface|null
-     */
     private ?EntityManagerInterface $entityManager;
 
     /**
-     * Set up tests.
+     * Set up.
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->httpClient = static::createClient();
         $container = static::getContainer();
@@ -56,338 +42,272 @@ class CategoryControllerTest extends WebTestCase
     }
 
     /**
-     * Test index route for anonymous user.
+     * Test index route as an anonymous user.
      */
     public function testIndexRouteAnonymousUser(): void
     {
-        // given
         $expectedStatusCode = 302;
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE);
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test index route for admin user.
+     * Test index route as admin user.
      *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testIndexRouteAdminUser(): void
     {
-        // given
         $expectedStatusCode = 200;
         $adminUser = $this->createUser([UserRole::ROLE_USER->value, UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE);
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test index route for non-authorized user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testIndexRouteNonAuthorizedUser(): void
     {
-        // given
         $expectedStatusCode = 403;
         $user = $this->createUser([UserRole::ROLE_USER->value]);
         $this->httpClient->loginUser($user);
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE);
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test create route for anonymous user.
+     * Test index route as admin user.
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testCreateRouteAnonymousUser(): void
     {
-        // given
         $expectedStatusCode = 302;
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test create route for admin user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testCreateRouteAdminUser(): void
     {
-        // given
         $expectedStatusCode = 200;
         $adminUser = $this->createUser([UserRole::ROLE_USER->value, UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test create route for non-authorized user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testCreateRouteNonAuthorizedUser(): void
     {
-        // given
         $expectedStatusCode = 403;
         $user = $this->createUser([UserRole::ROLE_USER->value]);
         $this->httpClient->loginUser($user);
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/create');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test show for anonymous user.
+     * Test show route as an anonymous user.
      */
     public function testShowRouteAnonymousUser(): void
     {
-        // given
         $expectedStatusCode = 302;
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId());
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test show route for admin user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testShowRouteAdminUser(): void
     {
-        // given
         $expectedStatusCode = 200;
         $adminUser = $this->createUser([UserRole::ROLE_USER->value, UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId());
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test show route for non-authorized user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testShowRouteNonAuthorizedUser(): void
     {
-        // given
         $expectedStatusCode = 403;
         $user = $this->createUser([UserRole::ROLE_USER->value]);
         $this->httpClient->loginUser($user);
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId());
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test edit for anonymous user.
+     * Test edit route as an anonymous user.
      */
     public function testEditRouteAnonymousUser(): void
     {
-        // given
         $expectedStatusCode = 302;
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId().'/edit');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test edit route for admin user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testEditRouteAdminUser(): void
     {
-        // given
         $expectedStatusCode = 200;
         $adminUser = $this->createUser([UserRole::ROLE_USER->value, UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId().'/edit');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test edit route for non-authorized user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testEditRouteNonAuthorizedUser(): void
     {
-        // given
         $expectedStatusCode = 403;
         $user = $this->createUser([UserRole::ROLE_USER->value]);
         $this->httpClient->loginUser($user);
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId().'/edit');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test delete for anonymous user.
+     * Test delete route as an anonymous user.
      */
     public function testDeleteRouteAnonymousUser(): void
     {
-        // given
         $expectedStatusCode = 302;
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId().'/delete');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test delete route for admin user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testDeleteRouteAdminUser(): void
     {
-        // given
         $expectedStatusCode = 200;
         $adminUser = $this->createUser([UserRole::ROLE_USER->value, UserRole::ROLE_ADMIN->value]);
         $this->httpClient->loginUser($adminUser);
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId().'/delete');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Test delete route for non-authorized user.
-     *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testDeleteRouteNonAuthorizedUser(): void
     {
-        // given
         $expectedStatusCode = 403;
         $user = $this->createUser([UserRole::ROLE_USER->value]);
         $this->httpClient->loginUser($user);
-
         $category = new Category();
         $category->setTitle('Test Category');
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-
-        // when
         $this->httpClient->request('GET', self::TEST_ROUTE.'/'.$category->getId().'/delete');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
     /**
-     * Create user.
-     *
      * @param array $roles User roles
      *
      * @return User User entity
      *
-     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     private function createUser(array $roles): User
     {

@@ -248,12 +248,12 @@ class Post
     }
 
     /**
-     * Getter for comments.
+     * Getter for comment.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param int                    $postId
+     * @param EntityManagerInterface $entityManager entityManager
+     * @param int                    $postId        postId
      *
-     * @return array
+     * @return array array
      */
     public function getComments(EntityManagerInterface $entityManager, int $postId): array
     {

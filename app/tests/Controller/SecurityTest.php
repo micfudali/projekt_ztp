@@ -1,7 +1,11 @@
 <?php
+
 /**
- * Tests for Security Controller.
+ * This test file is a part of project made as a part of the ZTP course completion.
+ *
+ * (c) Michał Fudali <michal.fudali@student.uj.edu.pl>
  */
+
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -10,23 +14,22 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * Class SecurityControllerTest.
  */
-
 class SecurityControllerTest extends WebTestCase
 {
     /**
-     * Tested route
+     * Tested route.
      *
      * @const string
      */
     public const TEST_ROUTE = '/login';
 
     /**
-     * Test client
+     * Test client.
      */
     private KernelBrowser $httpClient;
 
     /**
-     * Set up tests
+     * Set up tests.
      */
     public function setUp(): void
     {
@@ -34,7 +37,7 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
-     * Test route
+     * Test route.
      */
     public function testRoute(): void
     {

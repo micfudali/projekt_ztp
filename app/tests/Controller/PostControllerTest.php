@@ -1,6 +1,9 @@
 <?php
+
 /**
- * Post Controller test.
+ * This test file is a part of project made as a part of the ZTP course completion.
+ *
+ * (c) Michał Fudali <michal.fudali@student.uj.edu.pl>
  */
 
 namespace App\Tests\Controller;

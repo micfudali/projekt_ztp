@@ -1,6 +1,9 @@
 <?php
+
 /**
- * Post service tests.
+ * This test file is a part of project made as a part of the ZTP course completion.
+ *
+ * (c) Michał Fudali <michal.fudali@student.uj.edu.pl>
  */
 
 namespace App\Tests\Service;
@@ -24,14 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class PostServiceTest extends KernelTestCase
 {
-    /**
-     * Post repository.
-     */
     private ?EntityManagerInterface $entityManager;
-
-    /**
-     * Post service.
-     */
     private ?PostServiceInterface $postService;
 
     /**
@@ -163,9 +159,13 @@ class PostServiceTest extends KernelTestCase
     }
 
     /**
-     * Function createUser().
-     * @param array $roles
-     * @return User
+     * Create user.
+     *
+     * @param array $roles User roles
+     *
+     * @return User User entity
+     *
+     * @throws ContainerExceptionInterface|NotFoundExceptionInterface|ORMException|OptimisticLockException
      */
     private function createUser(array $roles): User
     {

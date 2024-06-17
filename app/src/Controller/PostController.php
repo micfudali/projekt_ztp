@@ -60,10 +60,10 @@ class PostController extends AbstractController
     /**
      * Show action.
      *
-     * @param Post                   $post
-     * @param EntityManagerInterface $entityManager
+     * @param Post                   $post          post
+     * @param EntityManagerInterface $entityManager entityManager
      *
-     * @return Response
+     * @return Response response
      */
     #[\Symfony\Component\Routing\Attribute\Route(
         '/{id}',

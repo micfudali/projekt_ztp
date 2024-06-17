@@ -1,11 +1,16 @@
 <?php
 
+/**
+ * This test file is a part of project made as a part of the ZTP course completion.
+ *
+ * (c) Michał Fudali <michal.fudali@student.uj.edu.pl>
+ */
+
 namespace App\Tests\Entity;
 
 use App\Entity\Comment;
 use App\Entity\Post;
 use PHPUnit\Framework\TestCase;
-use function PHPUnit\Framework\assertSame;
 
 /**
  * Comment class tests.
